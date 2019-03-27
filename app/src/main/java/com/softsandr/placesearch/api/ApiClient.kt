@@ -1,8 +1,8 @@
 package com.softsandr.placesearch.api
 
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
-import rx.Observable
 
 /**
  * Created by Oleksandr Drachuk on 27.03.19.
@@ -10,12 +10,12 @@ import rx.Observable
 interface ApiClient {
 
     @GET("/v2/venues/search")
-    fun searchByCategory(@Query("near") near: String,
-                         @Query("query") query: String,
-                         @Query("limit") limit: Int,
-                         @Query("client_id") clientId: String = API_CLIENT_ID,
-                         @Query("client_secret") clientSecret: String = API_CLIENT_SECRET,
-                         @Query("v") version: String = API_CLIENT_VERSION): Observable<ApiResponse>
+    fun searchForPlaces(@Query("near") near: String,
+                        @Query("query") query: String,
+                        @Query("limit") limit: Int,
+                        @Query("client_id") clientId: String = API_CLIENT_ID,
+                        @Query("client_secret") clientSecret: String = API_CLIENT_SECRET,
+                        @Query("v") version: String = API_CLIENT_VERSION): Single<ApiResponse>
 
     companion object {
         const val API_CLIENT_URL = "https://api.foursquare.com"

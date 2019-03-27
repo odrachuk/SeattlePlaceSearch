@@ -1,44 +1,101 @@
 package com.softsandr.placesearch.ui.main
 
 import android.os.Bundle
-import android.util.Log
+import android.text.TextUtils
+import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.softsandr.placesearch.R
-import com.softsandr.placesearch.api.ApiClient
 import com.softsandr.placesearch.di.InjectableActivity
+import com.softsandr.placesearch.ui.viewmodel.VenuesViewModel
+import com.softsandr.placesearch.ui.viewmodel.ViewModelFactory
+import com.softsandr.placesearch.utils.getQueryTextObservable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : InjectableActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
+    private lateinit var mapView: View
+    private lateinit var fabButton: FloatingActionButton
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var loadingView: View
+    private lateinit var errorView: View
+    private lateinit var warningView: View
+    private lateinit var viewModel: VenuesViewModel
+
+    private var showMap = false
 
     @Inject
-    lateinit var apiClient: ApiClient
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_main)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        setupToolbar()
+        setupMeta()
+        setupSearch()
+        setupRecycler()
+        setupMap()
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setupToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.app_name)
+    }
 
-        apiClient.searchByCategory("Seattle,+WA", "coffee", 20)
-            .subscribe({ response ->
-                Log.d(TAG, "Response: $response")
-            }, { throwable ->
-                Log.e(TAG, "Error: $throwable")
-            })
+    private fun setupRecycler() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(VenuesViewModel::class.java)
+
+        recyclerView = findViewById(R.id.view_recycler)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = SearchListAdapter(this, viewModel, selectCallback)
+
+        observeViewModel()
+    }
+
+    private fun setupMap() {
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+        mapView = mapFragment.view!!
+        mapView.visibility = View.GONE
+
+        fabButton = findViewById(R.id.activity_main_fab)
+        fabButton.setOnClickListener {
+            showMap = mapView.visibility != View.VISIBLE
+            mapView.visibility = if (showMap) View.VISIBLE else View.GONE
+        }
+        fabButton.hide()
+    }
+
+    private fun setupMeta() {
+        errorView = findViewById(R.id.view_error_root)
+        warningView = findViewById(R.id.view_warning_root)
+        loadingView = findViewById(R.id.view_loading_root)
+    }
+
+    private fun setupSearch() {
+        val searchView : SearchView = findViewById(R.id.activity_main_content_search_view)
+        searchView.getQueryTextObservable()
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .filter { text -> !TextUtils.isEmpty(text) }
+            .distinctUntilChanged()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { text -> viewModel.searchForPlaces(SEARCH_LOCATION, text) }
     }
 
     /**
@@ -51,16 +108,86 @@ class MainActivity : InjectableActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d(TAG, "onMapReady")
-        mMap = googleMap
+        map = googleMap
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(47.60621, -122.33207)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Seattle"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        map.addMarker(MarkerOptions().position(sydney).title("Marker in Seattle"))
+        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putBoolean(SAVE_KEY_SHOW_MAP, showMap)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        showMap = savedInstanceState?.getBoolean(SAVE_KEY_SHOW_MAP, false) ?: false
+    }
+
+    private fun observeViewModel() {
+        viewModel.getLoading().observe(this, Observer { loading ->
+            loading?.let {
+                loadingView.visibility = if (loading) View.VISIBLE else View.GONE
+                if (loading) {
+                    recyclerView.visibility = View.GONE
+                    mapView.visibility = View.GONE
+                    errorView.visibility = View.GONE
+                    warningView.visibility = View.GONE
+                    fabButton.hide()
+                }
+            }
+        })
+
+        viewModel.getError().observe(this, Observer { error ->
+            error?.let {
+                if (error) {
+                    errorView.visibility = View.VISIBLE
+                    warningView.visibility = View.GONE
+                    loadingView.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                    mapView.visibility = View.GONE
+                    fabButton.hide()
+                } else {
+                    errorView.visibility = View.GONE
+                    warningView.visibility = View.GONE
+                    if (showMap) {
+                        mapView.visibility = View.VISIBLE
+                    } else {
+                        recyclerView.visibility = View.VISIBLE
+                    }
+                    fabButton.show()
+                }
+            }
+        })
+
+        viewModel.getVenues().observe(this, Observer { venues ->
+            errorView.visibility = View.GONE
+            loadingView.visibility = View.GONE
+            if (venues != null) {
+                if (showMap) {
+                    mapView.visibility = View.VISIBLE
+                } else {
+                    recyclerView.visibility = View.VISIBLE
+                }
+                warningView.visibility = View.GONE
+                fabButton.show()
+            } else {
+                recyclerView.visibility = View.GONE
+                mapView.visibility = View.GONE
+                warningView.visibility = View.VISIBLE
+            }
+        })
+    }
+
+    private val selectCallback : (SearchListAdapter.SearchItem) -> Unit = {
+        // todo show details page
     }
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+        private const val SAVE_KEY_SHOW_MAP = "save_key_show_map"
+        private const val SEARCH_LOCATION = "Seattle,+WA"
     }
 }

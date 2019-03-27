@@ -18,8 +18,9 @@ data class ApiResponse(
         data class Venue(
             val id: String,
             val name: String,
-            val contact: Contact,
-            val location: Location
+            val contact: Contact?,
+            val location: Location?,
+            val categories: List<Category>?
         ) {
             data class Contact(
                 val phone: String,
@@ -38,6 +39,17 @@ data class ApiResponse(
                 val state: String,
                 val country: String
             )
+
+            data class Category(
+                val id: String,
+                val name: String,
+                val icon: CategoryIcon?
+            ) {
+                data class CategoryIcon(
+                    val prefix: String,
+                    val suffix: String
+                )
+            }
         }
     }
 }
