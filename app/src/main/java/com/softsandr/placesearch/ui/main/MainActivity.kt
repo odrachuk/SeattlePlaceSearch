@@ -1,24 +1,24 @@
-package com.softsandr.placesearch
+package com.softsandr.placesearch.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.softsandr.placesearch.R
+import com.softsandr.placesearch.di.InjectableActivity
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : InjectableActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MapsActivity", "onCreate")
-        setContentView(R.layout.activity_maps)
+        Log.d("MainActivity", "onCreate")
+        setContentView(R.layout.activity_main)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
@@ -35,7 +35,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("MapsActivity", "onMapReady")
+        Log.d("MainActivity", "onMapReady")
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
