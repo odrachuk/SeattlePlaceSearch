@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "269682962320",
+    "firebase_url": "https://aerial-citron-235805.firebaseio.com",
+    "project_id": "aerial-citron-235805",
+    "storage_bucket": "aerial-citron-235805.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269682962320:android:33495336697f4797",
+        "android_client_info": {
+          "package_name": "com.softsandr.placesearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269682962320-t04vkgknandd3u170ioguvhnrd7b95ai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softsandr.placesearch",
+            "certificate_hash": "7f1b3ee13efb470f7112e9c1a2233fc15f4620d3"
+          }
+        },
+        {
+          "client_id": "269682962320-4f5o7a5ck4cfjn1gsfomcdsmto2gje0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6j_6X61roZfA0BuK10p3gN8lbisMtvJo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269682962320-4f5o7a5ck4cfjn1gsfomcdsmto2gje0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

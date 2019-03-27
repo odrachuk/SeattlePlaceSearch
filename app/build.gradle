@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+kapt {
+    javacOptions {
+        option("-Xmaxerrs", 2000) // to see more compilation errors
+    }
+}
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        applicationId "com.softsandr.placesearch"
+        versionCode 1
+        versionName "1.0"
+
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        resConfig res_config
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            if (keystorePropertiesFile.exists()) {
+                println("Found keystore.properties")
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            } else {
+                println("keystore.properties not found, release signing will not work.")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            crunchPngs true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+
+    testImplementation 'junit:junit:4.12'
+
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+}
+
+apply plugin: 'com.google.gms.google-services'
