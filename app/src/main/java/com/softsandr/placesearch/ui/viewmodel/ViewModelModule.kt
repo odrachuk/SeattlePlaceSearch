@@ -3,6 +3,8 @@ package com.softsandr.placesearch.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.softsandr.placesearch.di.ViewModelKey
+import com.softsandr.placesearch.ui.details.DetailsViewModel
+import com.softsandr.placesearch.ui.search.SearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -14,10 +16,15 @@ import dagger.multibindings.IntoMap
 abstract class ViewModelModule {
 
     @Binds
-    @IntoMap
-    @ViewModelKey(VenuesViewModel::class)
-    internal abstract fun bindVenusViewModel(venuesViewModel: VenuesViewModel): ViewModel
+    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
     @Binds
-    internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    internal abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailsViewModel::class)
+    internal abstract fun bindDetailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
 }

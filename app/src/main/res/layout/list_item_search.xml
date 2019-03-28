@@ -3,9 +3,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.softsandr.placesearch.ui.main.SearchListItem"/>
+        <import type="com.softsandr.placesearch.ui.search.SearchListItem"/>
 
-        <variable name="item" type="com.softsandr.placesearch.ui.main.SearchListItem"/>
+        <variable name="item" type="com.softsandr.placesearch.ui.search.SearchListItem"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -46,7 +46,30 @@
                         android:src="@drawable/ic_texture_black_50dp"
                         android:contentDescription="@null"
                         android:background="@color/grayDark"
-                        app:imageUrl="@{item.imageUrl}"/>
+                        app:imageUrl='@{item.imageUrl ?? ""}'/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                    android:id="@+id/list_item_search_star_iv_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/item_star_padding"
+                    android:paddingEnd="@dimen/item_star_padding"
+                    android:paddingTop="@dimen/item_star_padding"
+                    android:paddingBottom="@dimen/item_star_padding"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <com.softsandr.placesearch.view.CheckableImageView
+                        android:id="@+id/list_item_search_star_iv"
+                        android:layout_width="@dimen/item_star_size"
+                        android:layout_height="@dimen/item_star_size"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/item_star_checkable"
+                        android:checked="@{item.saved}"/>
 
             </FrameLayout>
 
@@ -65,7 +88,7 @@
                     android:id="@+id/list_item_search_category_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.category}"
+                    android:text='@{item.category ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItem"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
                     app:layout_constraintRight_toRightOf="parent"
@@ -75,7 +98,7 @@
                     android:id="@+id/list_item_search_address_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.address}"
+                    android:text='@{item.address ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItemSecondary"
                     android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
@@ -86,7 +109,7 @@
                     android:id="@+id/list_item_search_distance_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.distance}"
+                    android:text='@{item.distance ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItemSecondary"
                     android:textColor="@color/pink"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"

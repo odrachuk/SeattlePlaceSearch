@@ -2,6 +2,7 @@ package com.softsandr.placesearch
 
 import android.app.Application
 import android.content.Context
+import com.softsandr.placesearch.db.AppDatabaseModule
 import com.softsandr.placesearch.ui.UiModule
 import com.softsandr.placesearch.ui.viewmodel.ViewModelModule
 import dagger.Module

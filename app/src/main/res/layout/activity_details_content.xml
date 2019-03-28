@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.softsandr.placesearch.R"/>
+        <import type="android.view.View"/>
+        <import type="com.softsandr.placesearch.ui.details.DetailsViewItem"/>
+
+        <variable name="item" type="com.softsandr.placesearch.ui.details.DetailsViewItem"/>
+        <variable name="linkClickListener" type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_details_content_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_details_padding">
+
+        <FrameLayout android:id="@+id/activity_details_content_category_iv_container"
+                     android:layout_width="wrap_content"
+                     android:layout_height="0dp"
+                     app:layout_constraintLeft_toLeftOf="parent"
+                     app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                    android:id="@+id/list_item_search_category_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_texture_black_50dp"
+                    android:contentDescription="@null"
+                    android:background="@color/grayDark"
+                    app:imageUrl='@{item.imageUrl ?? ""}'/>
+
+        </FrameLayout>
+
+        <TextView android:id="@+id/activity_details_content_name_tv"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:textSize="22sp"
+                  android:textStyle="bold"
+                  android:text='@{item.name ?? ""}'
+                  android:textColor="@android:color/black"
+                  android:layout_marginStart="10dp"
+                  app:layout_constraintLeft_toRightOf="@id/activity_details_content_category_iv_container"
+                  app:layout_constraintRight_toRightOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView android:id="@+id/activity_details_content_address_tv"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:text='@{item.address ?? ""}'
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:layout_marginStart="10dp"
+                  app:layout_constraintLeft_toRightOf="@id/activity_details_content_category_iv_container"
+                  app:layout_constraintRight_toRightOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/activity_details_content_name_tv"/>
+
+        <TextView android:id="@+id/activity_details_content_link_url_tv"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:text='@{item.linkUrl ?? ""}'
+                  android:textColor="@android:color/holo_blue_dark"
+                  android:layout_marginTop="10dp"
+                  android:textSize="18sp"
+                  android:background="?attr/selectableItemBackground"
+                  android:onClick="@{(v) -> linkClickListener.onClick(v)}"
+                  android:textAlignment="center"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintRight_toRightOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/activity_details_content_category_iv_container"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
