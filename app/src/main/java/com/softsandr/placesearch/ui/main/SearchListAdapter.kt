@@ -26,10 +26,7 @@ class SearchListAdapter(
         venuesViewModel.getVenues().observe(lifecycleOwner, Observer { venues ->
             venues?.let {
                 items.clear()
-                items.addAll(venues.map { v -> SearchListItem(v.name,
-                    v.contact?.formattedPhone ?: "N/A",
-                    v.location?.address ?: "N/A",
-                    SearchListItem.parseImageUrl(v) ?: "N/A") })
+                items.addAll(venues.map { v -> SearchListItem.buildFromVenue(v) })
                 notifyDataSetChanged()
             }
         })

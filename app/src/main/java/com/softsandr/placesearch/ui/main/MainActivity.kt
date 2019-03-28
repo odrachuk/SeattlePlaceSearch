@@ -110,9 +110,9 @@ class MainActivity : InjectableActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(47.60621, -122.33207)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Seattle"))
+        // Add a marker in Seattle Center and move the camera
+        val sydney = LatLng(SEARCH_LOCATION_LAT, SEARCH_LOCATION_LNG)
+        map.addMarker(MarkerOptions().position(sydney).title("Seattle Center"))
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
@@ -181,13 +181,16 @@ class MainActivity : InjectableActivity(), OnMapReadyCallback {
         })
     }
 
-    private val selectCallback : (SearchListAdapter.SearchItem) -> Unit = {
+    private val selectCallback : (SearchListItem) -> Unit = {
         // todo show details page
     }
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
         private const val SAVE_KEY_SHOW_MAP = "save_key_show_map"
-        private const val SEARCH_LOCATION = "Seattle,+WA"
+
+        const val SEARCH_LOCATION = "Seattle,+WA"
+        const val SEARCH_LOCATION_LAT = 47.60621
+        const val SEARCH_LOCATION_LNG = -122.33207
     }
 }

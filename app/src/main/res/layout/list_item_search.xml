@@ -62,22 +62,33 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                    android:id="@+id/list_item_search_address_tv"
+                    android:id="@+id/list_item_search_category_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.address}"
+                    android:text="@{item.category}"
                     android:textAppearance="?attr/textAppearanceListItem"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/list_item_search_name_tv"/>
 
             <TextView
-                    android:id="@+id/list_item_search_phone_tv"
+                    android:id="@+id/list_item_search_address_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.phone}"
+                    android:text="@{item.address}"
                     android:textAppearance="?attr/textAppearanceListItemSecondary"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/list_item_search_category_tv"/>
+
+            <TextView
+                    android:id="@+id/list_item_search_distance_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{item.distance}"
+                    android:textAppearance="?attr/textAppearanceListItemSecondary"
+                    android:textColor="@color/pink"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/list_item_search_address_tv"/>
