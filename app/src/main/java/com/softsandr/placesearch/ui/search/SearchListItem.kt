@@ -13,7 +13,8 @@ data class SearchListItem(val id: String,
                           val category: String?,
                           val address: String?,
                           val distance: String?,
-                          val imageUrl: String?) {
+                          val imageUrl: String?,
+                          var saved: Boolean = false) {
 
     companion object {
         private const val IMAGE_DEF_SIZE = 100
@@ -25,7 +26,8 @@ data class SearchListItem(val id: String,
                 venue.categories?.firstOrNull()?.name,
                 venue.location?.address,
                 parseDistance(venue),
-                parseImageUrl(venue))
+                parseImageUrl(venue),
+                venue.saved)
         }
 
         @JvmStatic

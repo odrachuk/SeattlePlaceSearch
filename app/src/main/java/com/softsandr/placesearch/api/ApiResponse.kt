@@ -32,7 +32,8 @@ data class Venue(
     val canonicalUrl: String?,
     val contact: Contact?,
     val location: Location?,
-    val categories: List<Category>?
+    val categories: List<Category>?,
+    var saved: Boolean = false
 ) {
     data class Contact(
         val phone: String,

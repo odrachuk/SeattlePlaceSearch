@@ -2,6 +2,7 @@ package com.softsandr.placesearch
 
 import android.app.Application
 import com.softsandr.placesearch.api.ApiModule
+import com.softsandr.placesearch.db.AppDatabaseModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -10,7 +11,7 @@ import javax.inject.Singleton
  * Created by Oleksandr Drachuk on 27.03.19.
  */
 @Singleton
-@Component(modules = [AppModule::class, ApiModule::class])
+@Component(modules = [AppModule::class, ApiModule::class, AppDatabaseModule::class])
 interface AppComponent {
 
     @Component.Builder

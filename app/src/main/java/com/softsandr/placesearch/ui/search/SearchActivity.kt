@@ -23,6 +23,7 @@ import com.softsandr.placesearch.di.InjectableActivity
 import com.softsandr.placesearch.ui.details.DetailsActivity
 import com.softsandr.placesearch.ui.viewmodel.ViewModelFactory
 import com.softsandr.placesearch.utils.getQueryTextObservable
+import com.softsandr.placesearch.view.CheckableImageView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -45,6 +46,7 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
         setContentView(R.layout.activity_search)
         setupToolbar()
         setupMeta()
@@ -60,11 +62,9 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
     }
 
     private fun setupRecycler() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
-
         recyclerView = findViewById(R.id.view_recycler)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = SearchListAdapter(this, viewModel, selectCallback)
+        recyclerView.adapter = SearchListAdapter(this, viewModel, selectCallback, saveCallback)
 
         observeViewModel()
     }
@@ -91,14 +91,14 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
     }
 
     private fun setupSearch() {
-        val searchView : SearchView = findViewById(R.id.activity_search_content_search_view)
-        searchView.getQueryTextObservable()
+        val searchView: SearchView = findViewById(R.id.activity_search_content_search_view)
+        viewModel.disposable?.add(searchView.getQueryTextObservable()
             .debounce(300, TimeUnit.MILLISECONDS)
             .filter { text -> !TextUtils.isEmpty(text) }
             .distinctUntilChanged()
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { text -> viewModel.searchForPlaces(SEARCH_LOCATION, text) }
+            .subscribe { text -> viewModel.searchForPlaces(SEARCH_LOCATION, text) })
     }
 
     /**
@@ -204,7 +204,16 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
         }
     }
 
-    private val selectCallback : (SearchListItem) -> Unit = { DetailsActivity.launch(this, it.id) }
+    private val selectCallback: (SearchListItem) -> Unit = { DetailsActivity.launch(this, it.id) }
+    private val saveCallback: (SearchListItem, CheckableImageView) -> Unit = {
+        i, v -> viewModel.updateSaveStatus(i.id, i.saved)
+        { updated ->
+            if (updated) {
+                i.saved = !i.saved
+                v.isChecked = i.saved
+            }
+        }
+    }
 
     companion object {
         private const val SAVE_KEY_SHOW_MAP = "save_key_show_map"
