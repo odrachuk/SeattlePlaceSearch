@@ -1,4 +1,4 @@
-package com.softsandr.placesearch.ui.main
+package com.softsandr.placesearch.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,21 +9,20 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.softsandr.placesearch.BR
 import com.softsandr.placesearch.R
-import com.softsandr.placesearch.ui.viewmodel.VenuesViewModel
 
 /**
  * Created by Oleksandr Drachuk on 27.03.19.
  */
 class SearchListAdapter(
     lifecycleOwner: LifecycleOwner,
-    venuesViewModel: VenuesViewModel,
+    searchViewModel: SearchViewModel,
     private val clickCallback: (SearchListItem) -> Unit
 ) : RecyclerView.Adapter<SearchListAdapter.SearchItemViewHolder>() {
 
     private val items = ArrayList<SearchListItem>()
 
     init {
-        venuesViewModel.getVenues().observe(lifecycleOwner, Observer { venues ->
+        searchViewModel.getVenues().observe(lifecycleOwner, Observer { venues ->
             venues?.let {
                 items.clear()
                 items.addAll(venues.map { v -> SearchListItem.buildFromVenue(v) })

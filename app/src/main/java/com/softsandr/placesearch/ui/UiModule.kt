@@ -1,6 +1,7 @@
 package com.softsandr.placesearch.ui
 
-import com.softsandr.placesearch.ui.main.MainActivity
+import com.softsandr.placesearch.ui.details.DetailsActivity
+import com.softsandr.placesearch.ui.search.SearchActivity
 import com.softsandr.placesearch.ui.viewmodel.ViewModelModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -12,5 +13,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class UiModule {
 
     @ContributesAndroidInjector
-    internal abstract fun provideMainActivity(): MainActivity
+    internal abstract fun provideMainActivity(): SearchActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun provideDetailsActivity(): DetailsActivity
 }

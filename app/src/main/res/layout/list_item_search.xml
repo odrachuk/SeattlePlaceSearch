@@ -3,9 +3,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.softsandr.placesearch.ui.main.SearchListItem"/>
+        <import type="com.softsandr.placesearch.ui.search.SearchListItem"/>
 
-        <variable name="item" type="com.softsandr.placesearch.ui.main.SearchListItem"/>
+        <variable name="item" type="com.softsandr.placesearch.ui.search.SearchListItem"/>
     </data>
 
     <androidx.cardview.widget.CardView
