@@ -13,7 +13,8 @@ data class DetailsViewItem(
     val distance: String?,
     val imageUrl: String?,
     val linkUrl: String?,
-    val address: String?
+    val address: String?,
+    var saved: Boolean = false
 ) {
     companion object {
 
@@ -25,7 +26,8 @@ data class DetailsViewItem(
                 SearchListItem.parseDistance(venue),
                 SearchListItem.parseImageUrl(venue),
                 venue.canonicalUrl,
-                venue.location?.address
+                venue.location?.address,
+                saved = venue.saved
             )
         }
     }

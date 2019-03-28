@@ -40,6 +40,7 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
     private lateinit var viewModel: SearchViewModel
 
     private var showMap = false
+    private var lastSearch: String? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -53,6 +54,11 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
         setupSearch()
         setupRecycler()
         setupMap()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lastSearch?.let { viewModel.searchForPlaces(SEARCH_LOCATION, it) }
     }
 
     private fun setupToolbar() {
@@ -98,7 +104,10 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
             .distinctUntilChanged()
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { text -> viewModel.searchForPlaces(SEARCH_LOCATION, text) })
+            .subscribe { text ->
+                lastSearch = text
+                viewModel.searchForPlaces(SEARCH_LOCATION, text)
+            })
     }
 
     /**
@@ -122,12 +131,14 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putBoolean(SAVE_KEY_SHOW_MAP, showMap)
+        outState?.putString(SAVE_KEY_LAST_SEARCH_TEXT, lastSearch)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         showMap = savedInstanceState?.getBoolean(SAVE_KEY_SHOW_MAP, false) ?: false
+        lastSearch = savedInstanceState?.getString(SAVE_KEY_LAST_SEARCH_TEXT, null)
     }
 
     private fun observeViewModel() {
@@ -217,6 +228,7 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
 
     companion object {
         private const val SAVE_KEY_SHOW_MAP = "save_key_show_map"
+        private const val SAVE_KEY_LAST_SEARCH_TEXT = "save_key_last_SEARCH_TEXT"
 
         const val SEARCH_LOCATION = "Seattle,+WA"
         const val SEARCH_LOCATION_LAT = 47.60621

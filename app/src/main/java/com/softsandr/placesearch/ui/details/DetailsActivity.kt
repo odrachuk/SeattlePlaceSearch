@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.softsandr.placesearch.R
 import com.softsandr.placesearch.api.Venue
 import com.softsandr.placesearch.databinding.ActivityDetailsContentBinding
@@ -25,10 +26,11 @@ import javax.inject.Inject
 /**
  * Created by Oleksandr Drachuk on 28.03.19.
  */
-class DetailsActivity: InjectableActivity(), OnMapReadyCallback {
+class DetailsActivity : InjectableActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var viewModel: DetailsViewModel
+    private lateinit var saveFab: FloatingActionButton
     private var contentBinding: ActivityDetailsContentBinding? = null
 
     @Inject
@@ -37,16 +39,18 @@ class DetailsActivity: InjectableActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        setupMap()
+        setupUi()
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
         intent?.extras?.getString(INTENT_KEY_VENUE_ID)?.let { viewModel.getVenueDetails(it) }
     }
 
-    private fun setupMap() {
+    private fun setupUi() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         mapFragment.view?.minimumHeight = resources.displayMetrics.heightPixels / 2
+
+        saveFab = findViewById(R.id.activity_details_fab)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -71,7 +75,20 @@ class DetailsActivity: InjectableActivity(), OnMapReadyCallback {
             contentBinding?.item = DetailsViewItem.buildFromVenue(venue)
             contentBinding?.linkClickListener = View.OnClickListener { openExternalBrowser(this, venue.canonicalUrl) }
             contentBinding?.executePendingBindings()
+
+            updateFabBtn(venue)
+            saveFab.setOnClickListener {
+                viewModel.updateSaveStatus(venue.id, venue.saved) { updated ->
+                    if (updated) {
+                        updateFabBtn(venue)
+                    }
+                }
+            }
         }
+    }
+
+    private fun updateFabBtn(venue: Venue) {
+        saveFab.setImageDrawable(if (venue.saved) getDrawable(R.drawable.item_star_fill) else getDrawable(R.drawable.item_star))
     }
 
     companion object {

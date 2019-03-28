@@ -6,8 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.softsandr.placesearch.api.ApiClient
 import com.softsandr.placesearch.api.DetailsApiResponse
 import com.softsandr.placesearch.api.Venue
+import com.softsandr.placesearch.db.dao.SavedVenuesDao
+import com.softsandr.placesearch.db.entity.SavedVenue
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -15,47 +20,72 @@ import javax.inject.Inject
 /**
  * Created by Oleksandr Drachuk on 27.03.19.
  */
-class DetailsViewModel @Inject constructor(private val apiClient: ApiClient): ViewModel() {
+class DetailsViewModel @Inject constructor(
+    private val apiClient: ApiClient,
+    private val savedVenuesDao: SavedVenuesDao
+) : ViewModel() {
     private var disposable: CompositeDisposable? = CompositeDisposable()
-    private val loading = MutableLiveData<Boolean>()
     private val venue = MutableLiveData<Venue>()
-    private val venueLoadError = MutableLiveData<Boolean>()
 
     fun getVenue(): LiveData<Venue?> = venue
-    fun getError(): LiveData<Boolean?> = venueLoadError
-    fun getLoading(): LiveData<Boolean?> = loading
 
     fun getVenueDetails(id: String) {
-        venue.value = Venue(id, "Metroplex Town Cars",
-            "https://foursquare.com/v/metroplex-town-cars/5ad1648a1987ec57f4601764",
-            Venue.Contact("4252986295", "(425) 298-6295"),
-            Venue.Location("32200 Military Rd S Apt B301",
-                null,
-                47.60372380771074,
-                -122.33453392982481,
-                "98001", "US", "Federal Way", "WA", "United States"),
-            listOf(Venue.Category("54541b70498ea6ccd0204bff",
-                "Transportation Service",
-                Venue.Category.CategoryIcon("https://ss3.4sqi.net/img/categories_v2/travel/taxi_",
-                    ".png"))))
+        disposable?.add(
+            Single.zip(
+                apiClient.details(id),
+                savedVenuesDao.selectItem(id),
+                BiFunction<DetailsApiResponse, Boolean, Venue>
+                { apiResponse, itemNotFound ->
+                    apiResponse.response.venue.saved = !itemNotFound
+                    return@BiFunction apiResponse.response.venue
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<Venue>() {
+                    override fun onSuccess(value: Venue) {
+                        venue.value = value
+                    }
 
-//        loading.value = true
-//        disposable?.add(apiClient.details(id)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribeWith(object : DisposableSingleObserver<DetailsApiResponse>() {
-//                override fun onSuccess(value: DetailsApiResponse) {
-//                    loading.value = false
-//                    venueLoadError.value = false
-//                    venue.value = value.response.venue
-//                }
-//
-//                override fun onError(e: Throwable) {
-//                    loading.value = false
-//                    venueLoadError.value = true
-//                }
-//            })
-//        )
+                    override fun onError(e: Throwable) {
+                    }
+                })
+        )
+    }
+
+    fun updateSaveStatus(id: String, isSave: Boolean, updateCallback: (Boolean) -> Unit) {
+        if (isSave) {
+            disposable?.add(
+                savedVenuesDao.deleteItem(id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableCompletableObserver() {
+                        override fun onComplete() {
+                            venue.value?.saved = false
+                            updateCallback.invoke(true)
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            updateCallback.invoke(false)
+                        }
+                    })
+            )
+        } else {
+            disposable?.add(
+                savedVenuesDao.insertItem(SavedVenue(id))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableCompletableObserver() {
+                        override fun onComplete() {
+                            venue.value?.saved = true
+                            updateCallback.invoke(true)
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            updateCallback.invoke(false)
+                        }
+                    })
+            )
+        }
     }
 
     override fun onCleared() {

@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.softsandr.placesearch.db.entity.SavedVenue
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 /**
@@ -28,6 +29,6 @@ abstract class SavedVenuesDao {
 
     fun deleteItem(venueId: String) : Completable = Completable.fromAction { delete(venueId) }
     fun insertItem(savedVenue: SavedVenue) : Completable = Completable.fromAction { insert(savedVenue) }
-    fun selectItem(venueId: String) : Single<SavedVenue> = Single.fromCallable { selectSavedVenue(venueId) }
+    fun selectItem(venueId: String) : Single<Boolean> = Maybe.fromCallable { selectSavedVenue(venueId) }.isEmpty
     fun selectAllItems() : Single<List<SavedVenue>> = Single.fromCallable { selectAll() }
 }
