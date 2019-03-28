@@ -3,4 +3,5 @@
     <string name="search_query_hint">Search for places</string>
     <string name="error_happens_while_data_loading">An error occurred while loading data</string>
     <string name="no_content">No content</string>
+    <string name="seattle_center">Seattle Center</string>
 </resources>

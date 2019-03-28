@@ -29,19 +29,19 @@ data class DetailsApiResponse(
 data class Venue(
     val id: String,
     val name: String,
+    val canonicalUrl: String?,
     val contact: Contact?,
     val location: Location?,
     val categories: List<Category>?
 ) {
     data class Contact(
         val phone: String,
-        val formattedPhone: String,
-        val twitter: String
+        val formattedPhone: String
     )
 
     data class Location(
         val address: String,
-        val crossStreet: String,
+        val crossStreet: String?,
         val lat: Double,
         val lng: Double,
         val postalCode: String,

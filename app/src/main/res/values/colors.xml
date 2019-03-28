@@ -8,4 +8,5 @@
     <color name="grayLighter">#f1f1f1</color>
     <color name="grayDark">#7C7575</color>
     <color name="pink">#D81B60</color>
+    <color name="black_20_opacity">#33222222</color>
 </resources>

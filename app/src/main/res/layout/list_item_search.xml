@@ -46,7 +46,7 @@
                         android:src="@drawable/ic_texture_black_50dp"
                         android:contentDescription="@null"
                         android:background="@color/grayDark"
-                        app:imageUrl="@{item.imageUrl}"/>
+                        app:imageUrl='@{item.imageUrl ?? ""}'/>
 
             </FrameLayout>
 
@@ -65,7 +65,7 @@
                     android:id="@+id/list_item_search_category_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.category}"
+                    android:text='@{item.category ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItem"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
                     app:layout_constraintRight_toRightOf="parent"
@@ -75,7 +75,7 @@
                     android:id="@+id/list_item_search_address_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.address}"
+                    android:text='@{item.address ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItemSecondary"
                     android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
@@ -86,7 +86,7 @@
                     android:id="@+id/list_item_search_distance_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{item.distance}"
+                    android:text='@{item.distance ?? ""}'
                     android:textAppearance="?attr/textAppearanceListItemSecondary"
                     android:textColor="@color/pink"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"

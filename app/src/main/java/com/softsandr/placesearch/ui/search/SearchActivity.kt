@@ -192,8 +192,8 @@ class SearchActivity : InjectableActivity(), OnMapReadyCallback {
 
     private fun addCenterMarker() {
         val sydney = LatLng(SEARCH_LOCATION_LAT, SEARCH_LOCATION_LNG)
-        map.addMarker(MarkerOptions().position(sydney).title("Seattle Center"))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f))
+        map.addMarker(MarkerOptions().position(sydney).title(getString(R.string.seattle_center)))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13f))
     }
 
     private fun addSearchItemMarker(venue: Venue) {
