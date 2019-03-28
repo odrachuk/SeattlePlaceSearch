@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_inset">22dp</dimen>
+
+    <dimen name="list_item_card_view_margin_left_right">10dp</dimen>
+    <dimen name="list_item_card_view_margin_top_bottom">5dp</dimen>
+    <dimen name="list_item_card_view_corner_radius">5dp</dimen>
+    <dimen name="list_item_card_view_elevation">2dp</dimen>
+    <dimen name="list_item_card_view_padding_top_bottom">5dp</dimen>
+    <dimen name="list_item_card_view_padding_left_right">10dp</dimen>
+</resources>
