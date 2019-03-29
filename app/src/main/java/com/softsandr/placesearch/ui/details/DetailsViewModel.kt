@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.softsandr.placesearch.api.ApiClient
-import com.softsandr.placesearch.api.DetailsApiResponse
 import com.softsandr.placesearch.api.Venue
 import com.softsandr.placesearch.db.dao.SavedVenuesDao
 import com.softsandr.placesearch.db.entity.SavedVenue
