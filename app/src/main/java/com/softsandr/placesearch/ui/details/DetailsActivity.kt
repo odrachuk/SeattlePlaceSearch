@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +23,7 @@ import com.softsandr.placesearch.ui.search.SearchActivity
 import com.softsandr.placesearch.ui.viewmodel.ViewModelFactory
 import com.softsandr.placesearch.utils.NavigatingUtil.openExternalBrowser
 import javax.inject.Inject
+
 
 /**
  * Created by Oleksandr Drachuk on 28.03.19.
@@ -46,11 +48,22 @@ class DetailsActivity : InjectableActivity(), OnMapReadyCallback {
     }
 
     private fun setupUi() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         mapFragment.view?.minimumHeight = resources.displayMetrics.heightPixels / 2
 
         saveFab = findViewById(R.id.activity_details_fab)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

@@ -8,6 +8,7 @@ import com.softsandr.placesearch.api.DetailsApiResponse
 import com.softsandr.placesearch.api.Venue
 import com.softsandr.placesearch.db.dao.SavedVenuesDao
 import com.softsandr.placesearch.db.entity.SavedVenue
+import com.softsandr.placesearch.utils.stubbedVenue
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,7 +31,7 @@ class DetailsViewModel @Inject constructor(
     fun getVenue(): LiveData<Venue?> = venue
 
     fun getVenueDetails(id: String) {
-        disposable?.add(
+        /*disposable?.add(
             Single.zip(
                 apiClient.details(id),
                 savedVenuesDao.selectItem(id),
@@ -38,6 +39,27 @@ class DetailsViewModel @Inject constructor(
                 { apiResponse, itemNotFound ->
                     apiResponse.response.venue.saved = !itemNotFound
                     return@BiFunction apiResponse.response.venue
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<Venue>() {
+                    override fun onSuccess(value: Venue) {
+                        venue.value = value
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+                })
+        )*/
+
+        disposable?.add(
+            Single.zip(
+                Single.fromCallable { stubbedVenue(id) },
+                savedVenuesDao.selectItem(id),
+                BiFunction<Venue?, Boolean, Venue>
+                { apiVenu, itemNotFound ->
+                    apiVenu.saved = !itemNotFound
+                    return@BiFunction apiVenu
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

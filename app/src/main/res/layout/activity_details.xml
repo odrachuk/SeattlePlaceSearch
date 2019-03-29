@@ -12,6 +12,7 @@
             android:id="@+id/activity_details_app_bar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:stateListAnimator="@null"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:fitsSystemWindows="true">
 
@@ -20,12 +21,28 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-                app:statusBarScrim="@android:color/transparent">
+                app:statusBarScrim="@android:color/transparent"
+                app:contentScrim="@android:color/transparent">
 
             <include layout="@layout/fragment_map"
                      android:layout_height="match_parent"
                      android:layout_width="match_parent"
-                     android:fitsSystemWindows="true"/>
+                     android:fitsSystemWindows="true"
+                     app:layout_collapseMode="pin"/>
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    app:navigationIcon="@drawable/ic_arrow_back"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:contentInsetEnd="@dimen/toolbar_inset"
+                    app:contentInsetLeft="@dimen/toolbar_inset"
+                    app:contentInsetRight="@dimen/toolbar_inset"
+                    app:contentInsetStart="@dimen/toolbar_inset"
+                    app:layout_collapseMode="pin"
+                    app:elevation="0dp"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
