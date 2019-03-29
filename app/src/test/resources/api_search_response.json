@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5c9dc023f594df6af9f39b04"
+  },
+  "response": {
+    "venues": [
+      {
+        "id": "552ead16498e2b0d920f29ef",
+        "name": "Its Bao Time!",
+        "contact": {
+
+        },
+        "location": {
+          "lat": 47.6210027546395,
+          "lng": -122.33584495991394,
+          "labeledLatLngs": [
+            {
+              "label": "display",
+              "lat": 47.6210027546395,
+              "lng": -122.33584495991394
+            }
+          ],
+          "cc": "US",
+          "city": "Seattle",
+          "state": "WA",
+          "country": "United States",
+          "formattedAddress": [
+            "Seattle, WA",
+            "United States"
+          ]
+        },
+        "categories": [
+          {
+            "id": "4bf58dd8d48988d1cb941735",
+            "name": "Food Truck",
+            "pluralName": "Food Trucks",
+            "shortName": "Food Truck",
+            "icon": {
+              "prefix": "https:\/\/ss3.4sqi.net\/img\/categories_v2\/food\/streetfood_",
+              "suffix": ".png"
+            },
+            "primary": true
+          }
+        ],
+        "verified": false,
+        "stats": {
+          "tipCount": 0,
+          "usersCount": 0,
+          "checkinsCount": 0,
+          "visitsCount": 0
+        },
+        "beenHere": {
+          "count": 0,
+          "lastCheckinExpiredAt": 0,
+          "marked": false,
+          "unconfirmedCount": 0
+        },
+        "referralId": "v-1553842211",
+        "venueChains": [
+
+        ],
+        "hasPerk": false
+      },
+      {
+        "id": "4b22ac87f964a520894b24e3",
+        "name": "Taco Time",
+        "contact": {
+
+        },
+        "location": {
+          "address": "1140 Elliott Ave W",
+          "crossStreet": "in Queen Anne",
+          "lat": 47.62960927842986,
+          "lng": -122.37168289752363,
+          "labeledLatLngs": [
+            {
+              "label": "display",
+              "lat": 47.62960927842986,
+              "lng": -122.37168289752363
+            }
+          ],
+          "postalCode": "98119",
+          "cc": "US",
+          "city": "Seattle",
+          "state": "WA",
+          "country": "United States",
+          "formattedAddress": [
+            "1140 Elliott Ave W (in Queen Anne)",
+            "Seattle, WA 98119",
+            "United States"
+          ]
+        },
+        "categories": [
+          {
+            "id": "4bf58dd8d48988d16e941735",
+            "name": "Fast Food Restaurant",
+            "pluralName": "Fast Food Restaurants",
+            "shortName": "Fast Food",
+            "icon": {
+              "prefix": "https:\/\/ss3.4sqi.net\/img\/categories_v2\/food\/fastfood_",
+              "suffix": ".png"
+            },
+            "primary": true
+          }
+        ],
+        "verified": true,
+        "stats": {
+          "tipCount": 0,
+          "usersCount": 0,
+          "checkinsCount": 0,
+          "visitsCount": 0
+        },
+        "beenHere": {
+          "count": 0,
+          "lastCheckinExpiredAt": 0,
+          "marked": false,
+          "unconfirmedCount": 0
+        },
+        "referralId": "v-1553842211",
+        "venueChains": [
+
+        ],
+        "hasPerk": false
+      },
+      {
+        "id": "4af5dd6ef964a520fffd21e3",
+        "name": "Jive Time",
+        "contact": {
+
+        },
+        "location": {
+          "address": "1419 10th Ave",
+          "crossStreet": "Pike St",
+          "lat": 47.61405351322141,
+          "lng": -122.31900767396563,
+          "labeledLatLngs": [
+            {
+              "label": "display",
+              "lat": 47.61405351322141,
+              "lng": -122.31900767396563
+            }
+          ],
+          "postalCode": "98122",
+          "cc": "US",
+          "city": "Seattle",
+          "state": "WA",
+          "country": "United States",
+          "formattedAddress": [
+            "1419 10th Ave (Pike St)",
+            "Seattle, WA 98122",
+            "United States"
+          ]
+        },
+        "categories": [
+          {
+            "id": "4bf58dd8d48988d10d951735",
+            "name": "Record Shop",
+            "pluralName": "Record Shops",
+            "shortName": "Record Shop",
+            "icon": {
+              "prefix": "https:\/\/ss3.4sqi.net\/img\/categories_v2\/shops\/record_shop_",
+              "suffix": ".png"
+            },
+            "primary": true
+          }
+        ],
+        "verified": false,
+        "stats": {
+          "tipCount": 0,
+          "usersCount": 0,
+          "checkinsCount": 0,
+          "visitsCount": 0
+        },
+        "beenHere": {
+          "count": 0,
+          "lastCheckinExpiredAt": 0,
+          "marked": false,
+          "unconfirmedCount": 0
+        },
+        "referralId": "v-1553842211",
+        "venueChains": [
+
+        ],
+        "hasPerk": false
+      }
+    ],
+    "geocode": {
+      "what": "",
+      "where": "seattle wa",
+      "feature": {
+        "cc": "US",
+        "name": "Seattle",
+        "displayName": "Seattle, WA, United States",
+        "matchedName": "Seattle, WA, United States",
+        "highlightedName": "<b>Seattle<\/b>, <b>WA<\/b>, United States",
+        "woeType": 7,
+        "slug": "seattle-washington",
+        "id": "geonameid:5809844",
+        "longId": "72057594043737780",
+        "geometry": {
+          "center": {
+            "lat": 47.60621,
+            "lng": -122.33207
+          },
+          "bounds": {
+            "ne": {
+              "lat": 47.734145,
+              "lng": -122.224433
+            },
+            "sw": {
+              "lat": 47.481719999999996,
+              "lng": -122.459696
+            }
+          }
+        }
+      },
+      "parents": [
+
+      ]
+    }
+  }
+}

@@ -81,7 +81,7 @@
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/list_item_search_category_iv_container"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/list_item_search_star_iv_container"
                     app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
